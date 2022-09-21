@@ -18,7 +18,7 @@ from maniskill2_learn.networks.utils import (
     replace_placeholder_with_args,
 )
 from maniskill2_learn.utils.data import GDict
-from .env_utils import build_env
+from real_robot_eval_examples.env_utils import build_env
 
 
 def parse_args():
@@ -137,6 +137,8 @@ if __name__ == "__main__":
                 .unsqueeze(0)
                 .to_torch(dtype="float32", wrapper=False, device=device)
             )
+            obs.pop("frame_related_states")
+            obs.pop("to_frames")
             action = actor(obs)[0]
             action = action.cpu().numpy()
             obs, rew, done, info = env.step(action)
